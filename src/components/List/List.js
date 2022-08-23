@@ -1,25 +1,35 @@
 import {SettingsContext} from "../context/context"
 import { useContext ,useState} from "react"
+import Pagination from "../Pagination/Pagination"; 
 
 export default function List(props){
-
   const {list,toggleComplete,deleteItem} = useContext(SettingsContext)
 
-  // const [color,setColor] = useState('red')
-  // const [deletes,setDelete] = useState("false")
-console.log(list);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tasksForPage] = useState(4);
 function toggle (id){
   toggleComplete(id)
   deleteItem(id)
 }
-// function setDe(){
-//   setDelete('true')
-// }
+
+
+const indexOfLastPost = currentPage * tasksForPage;
+const indexOfFirstPost = indexOfLastPost - tasksForPage;
+const currentPosts = list.slice(indexOfFirstPost, indexOfLastPost);
+
+function pag() {
+  
+  setCurrentPage(pageNumber);
+  
+} 
+
+
+
     return(
         <>
          {
              
-             list.map((item,index) => (
+             currentPosts.map((item,index) => (
         <div className='card' key={index}>
           <div className='first'>
           <div className='complete' onClick={() =>  toggle(item.id)}>Complete: {item.complete.toString()}
@@ -39,8 +49,14 @@ function toggle (id){
         </div>
       ))
   
-    //   <List/>
+  
     }
+
+<div className='page'>
+        <Pagination tasksForPage={tasksForPage}
+          totalPosts={list.length}
+          paginate={pag} />
+      </div>
         </>
     )
 }
