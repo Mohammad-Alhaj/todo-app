@@ -1,12 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 export const SettingsContext = React.createContext();
 export default function Settings(props) {
-    const [list, setList] = useState([]);
+
+  const initialValue = ()=>{
+   let saveData = localStorage.getItem('todos')
+
+   return saveData?JSON.parse(saveData):[]
+  }
+
+    const [list, setList] = useState(initialValue);
+    console.log('from list',list);
     const [incomplete, setIncomplete] = useState([]);
 
     function toggleComplete(id) {
-        console.log({id});
             const items = list.map( item => {
               if ( item.id == id ) {
                 item.complete = ! item.complete;
@@ -18,11 +25,17 @@ export default function Settings(props) {
         
           }
           function deleteItem(id) {
-            console.log('from deleteID',id);
             const items = list.filter( item => item.id !== id );
             setList(items);
           }
 
+         
+
+          useEffect(()=>{
+            let just = JSON.stringify(list)
+            console.log(just);
+            localStorage.setItem('todos',just)
+          },[list])
 
 
     return (

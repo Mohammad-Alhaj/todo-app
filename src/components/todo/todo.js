@@ -3,14 +3,12 @@ import useForm from '../../hooks/form.js';
 
 import { v4 as uuid } from 'uuid';
 import './todo.css'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import {Button,Form} from 'react-bootstrap';
 import List from '../List/List'
 import {SettingsContext} from '../context/context.js';
 const ToDo = () => {
   let counter = 0
 const {list,setList ,incomplete,setIncomplete} = useContext(SettingsContext)
-console.log('dddd',setList);
   const [defaultValues] = useState({
     difficulty: 4,
   });
@@ -18,13 +16,12 @@ console.log('dddd',setList);
   // const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
-  console.log(list.length);
   function addItem(item) {
     let save = uuid()
     item.id = save
     item.complete = false;
-    console.log(item);
     setList([...list, item]);
+
   }
 
   function randomNumber(id){
