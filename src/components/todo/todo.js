@@ -6,14 +6,18 @@ import './todo.css'
 import {Button,Form} from 'react-bootstrap';
 import List from '../List/List'
 import {SettingsContext} from '../context/context.js';
+import { contextAuth } from '../context/contextAuth.js';
+import { When } from "react-if"
+import Auth from '../Auth/Auth.js';
+
 const ToDo = () => {
   let counter = 0
 const {list,setList ,incomplete,setIncomplete} = useContext(SettingsContext)
+const {isValid} = useContext(contextAuth)
+
   const [defaultValues] = useState({
     difficulty: 4,
   });
-  // const [list, setList] = useState([]);
-  // const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
@@ -24,27 +28,6 @@ const {list,setList ,incomplete,setIncomplete} = useContext(SettingsContext)
 
   }
 
-  function randomNumber(id){
-    
-    return ++counter
-  }
-  // function deleteItem(id) {
-  //   const items = list.filter( item => item.id !== id );
-  //   setList(items);
-  // }
-
-//   function toggleComplete(id) {
-// console.log({id});
-//     const items = list.map( item => {
-//       if ( item.id == id ) {
-//         item.complete = ! item.complete;
-//       }
-//       return item;
-//     });
-
-//     setList(items);
-
-//   }
 
   useEffect(() => {
     let incompleteCount = list.filter(item => !item.complete).length;
@@ -54,12 +37,14 @@ const {list,setList ,incomplete,setIncomplete} = useContext(SettingsContext)
 
   return (
     <div className='form'>
+      <When condition={isValid}>
     
     <header>
         <h1>To Do List: {incomplete} items pending</h1>
       </header>
     <div className='container_form'>
 
+        <Auth action="delete">
       <Form className='form_bootstrap' onSubmit={handleSubmit}>
       <h2>Add To Do Item</h2>
 
@@ -86,37 +71,14 @@ const {list,setList ,incomplete,setIncomplete} = useContext(SettingsContext)
       </Button>
     </Form>
     
+    </Auth>
 
 
     <List />
 
-    
-      {/* {
-      list.length <=3? 
-      
-      list.map(item => (
-   
-        <div className='card' key={item.id}>
-          <div className='first'>
-          <div className='complete' onClick={() => toggleComplete(item.id)}>Complete: {item.complete.toString()}
-          </div>
-          <span className='assigned'>{item.assignee}</span>
-
-          </div>
-          <hr />
-          <div className='seconde'>
-          <p className='toDo'>{item.text}</p>
-          <p className='difficulty'> Difficulty: {item.difficulty}</p>
-          </div>
-       
-    
-      
-        </div>
-      ))
-      :<List/>
-    } */}
-
     </div>
+    </When>
+  
     </div>
   );
 };
