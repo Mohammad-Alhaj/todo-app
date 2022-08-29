@@ -4,6 +4,7 @@ import Pagination from "../Pagination/Pagination";
 import {SettingsControlContext} from '../context/ControlSetting'
 import './List.css'
 import {Button,Form} from 'react-bootstrap';
+import Auth from "../Auth/Auth";
 
 export default function List(props){
   const {list,toggleComplete,deleteItem,setList} = useContext(SettingsContext)
@@ -78,11 +79,19 @@ setList(showCompleted)
              
              currentPosts.map((item,index) => (
         <div className='card' key={index}>
+            {/* <Auth action="delete"> */}
           <div className='first'>
-          <div style={{background:item.complete?'green':'red' }} className='complete' onClick={()=>toggleComplete(item.id)}>Complete: {item.complete.toString()}
+            <Auth action="delete">
+          <div style={{background:item.complete?'green':'red' }} className='complete' onClick={()=>toggleComplete(item.id)}>
+            Complete: {item.complete.toString()}
           </div>
+          </Auth>
+          {/* </Auth> */}
           <span className='assigned'>{item.assignee}</span>
+          <Auth action='delete'>
           <button className='btn' onClick={() =>  toggle(item.id)}>X</button>
+
+          </Auth>
 
           </div>
           <hr />

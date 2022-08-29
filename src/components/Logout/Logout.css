@@ -1,0 +1,12 @@
+.logout button{
+    background-color: #ff0000; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+padding-bottom: 11px;
+    font-size: 16px;
+  }
+
+.logout button:hover{
+    background-color: rgba(202, 44, 44, 0.909)
+}
