@@ -17,7 +17,6 @@ const useForm = (callback, defaultValues={}) => {
     if (parseInt(value)) {
       value = parseInt(value);
     }
-
     setValues(values => ({ ...values, [name]: value }));
   };
 
