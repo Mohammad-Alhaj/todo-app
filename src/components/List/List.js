@@ -7,14 +7,14 @@ import {Button,Form} from 'react-bootstrap';
 import Auth from "../Auth/Auth";
 
 export default function List(props){
-  const {list,toggleComplete,deleteItem,setList} = useContext(SettingsContext)
+  const {list,toggleComplete,handleDelete,setList,handleUpdate} = useContext(SettingsContext)
   const {tasksForPage,setTaskForPage} = useContext(SettingsControlContext)
 
   const [currentPage, setCurrentPage] = useState(1);
   // const [tasksForPage] = useState(2);
 function toggle (id){
   // toggleComplete(id)
-  deleteItem(id)
+  handleDelete(id)
 }
 
 const [showCompleted,setCompleted] = useState([])
@@ -22,7 +22,7 @@ const [showCompleted,setCompleted] = useState([])
 const indexOfLastPost = currentPage * tasksForPage;
 const indexOfFirstPost = indexOfLastPost - tasksForPage;
 const currentPosts = list.slice(indexOfFirstPost, indexOfLastPost);
-
+console.log({currentPosts});
 function pag() {
   
   setCurrentPage(pageNumber);
@@ -82,12 +82,12 @@ setList(showCompleted)
             {/* <Auth action="delete"> */}
           <div className='first'>
             <Auth action="delete">
-          <div style={{background:item.complete?'green':'red' }} className='complete' onClick={()=>toggleComplete(item.id)}>
+          <div style={{background:item.complete?'green':'red' }} className='complete' onClick={()=>handleUpdate(item)}>
             Complete: {item.complete.toString()}
           </div>
           </Auth>
           {/* </Auth> */}
-          <span className='assigned'>{item.assignee}</span>
+          <span className='assigned'>{item.AssignedTo}</span>
           <Auth action='delete'>
           <button className='btn' onClick={() =>  toggle(item.id)}>X</button>
 
@@ -96,7 +96,7 @@ setList(showCompleted)
           </div>
           <hr />
           <div className='seconde'>
-          <p className='toDo'>{item.text}</p>
+          <p className='toDo'>{item.todo}</p>
           {/* <button onClick={()=>setDe()} className="delete">{deletes}</button> */}
           <p className='difficulty'> Difficulty: {item.difficulty}</p>
           </div>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import superagent from 'superagent';
 import base64 from 'base-64';
-import jwt from 'jsonwebtoken';
 import cookie from 'react-cookies';
-let url = 'https://hiservice.herokuapp.com/'
+let url = 'https://todoappmohammadalhaj.herokuapp.com/'
 export const contextAuth = React.createContext();
 export default function ContextLoginA(props) {
     // for signup
@@ -14,7 +13,6 @@ export default function ContextLoginA(props) {
     const[user,setUser] = useState({
         actions:cookie.load('actions') || []
     })
-    console.log(user);
     useEffect(()=>{
 
         if(cookie.load('token')){
@@ -29,7 +27,7 @@ export default function ContextLoginA(props) {
 
     async  function handleLogin (username,password){
         try{
-            let response = await superagent.post(`${url}users/login`)
+            let response = await superagent.post(`${url}signin`)
             .set('authorization',`Basic ${base64.encode(`${username}:${password}`)}`)
             console.log(response.body);
             validUser(response.body)
@@ -53,7 +51,7 @@ export default function ContextLoginA(props) {
 
     async  function handleSignup (username,password){
         try{
-            let response = await superagent.post(`${url}users/signup`)
+            let response = await superagent.post(`${url}signup`)
             .send({'username':username,
                     'password':password
         })

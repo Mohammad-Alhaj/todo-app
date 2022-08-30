@@ -7,13 +7,18 @@ import {Button,Form} from 'react-bootstrap';
 import List from '../List/List'
 import {SettingsContext} from '../context/context.js';
 import { contextAuth } from '../context/contextAuth.js';
+import { context } from '../context/context';
 import { When } from "react-if"
 import Auth from '../Auth/Auth.js';
 
 const ToDo = () => {
   let counter = 0
-const {list,setList ,incomplete,setIncomplete} = useContext(SettingsContext)
+const {list,setList ,incomplete,setIncomplete,
+  SetAssigned,setTodo,handleAdd,todo,Assigned,handleGetTodos
+} = useContext(SettingsContext)
+
 const {isValid} = useContext(contextAuth)
+
 
   const [defaultValues] = useState({
     difficulty: 4,
@@ -33,7 +38,30 @@ const {isValid} = useContext(contextAuth)
     let incompleteCount = list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
     document.title = `To Do List: ${incomplete}`;
+
   }, [list]);
+
+
+
+const handleAddTodo = (e)=>{
+  setTodo(e.target.value)
+}
+
+const handleAssigned = (e)=>{
+SetAssigned(e.target.value)
+}
+
+const handleSubmits = (e)=>{
+e.preventDefault()
+// const data = {
+//   todo:todo,
+//   AssignedTo:Assigned
+// }
+handleAdd(todo,Assigned)
+handleGetTodos()
+}
+
+
 
   return (
     <div className='form'>
@@ -45,12 +73,12 @@ const {isValid} = useContext(contextAuth)
     <div className='container_form'>
 
         <Auth action="delete">
-      <Form className='form_bootstrap' onSubmit={handleSubmit}>
+      <Form className='form_bootstrap' onSubmit={handleSubmits}>
       <h2>Add To Do Item</h2>
 
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>To do item</Form.Label>
-        <Form.Control onChange={handleChange} name="text" type="text" placeholder="Item Details" />
+        <Form.Control onChange={handleAddTodo} name="text" type="text" placeholder="Item Details" />
         <Form.Text className="text-muted">
 
         </Form.Text>
@@ -58,7 +86,7 @@ const {isValid} = useContext(contextAuth)
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Assigned to</Form.Label>
-        <Form.Control onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
+        <Form.Control onChange={handleAssigned} name="assignee" type="text" placeholder="Assignee Name" />
       </Form.Group>
       <div className='submit'>
 
